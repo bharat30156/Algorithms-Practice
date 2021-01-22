@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="703bd1be-fc18-4ea9-8f06-f057017ef39d" name="Default Changelist" comment="" />
+    <list default="true" id="703bd1be-fc18-4ea9-8f06-f057017ef39d" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithms/bin/SearchAlgorithms/SaddlebackSearch.class" beforeDir="false" afterPath="$PROJECT_DIR$/Algorithms/bin/SearchAlgorithms/SaddlebackSearch.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Algorithms/src/SearchAlgorithms/SaddlebackSearch.java" beforeDir="false" afterPath="$PROJECT_DIR$/Algorithms/src/SearchAlgorithms/SaddlebackSearch.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +22,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="E:/Java Spring Projects/Login and registration (Already Tested)/pom.xml" />
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
