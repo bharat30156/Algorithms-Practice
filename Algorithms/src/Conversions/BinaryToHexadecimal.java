@@ -1,0 +1,50 @@
+package Conversions;
+
+import java.util.HashMap;
+
+/**
+ * 
+ * @author bharat
+ *
+ */
+
+//Convert any Binary Number to a Hexadecimal Number
+
+public class BinaryToHexadecimal {
+	/**
+	 * This method converts a binary Number to a hexaDecimal number
+	 * 
+	 * @param binary the binary number
+	 * @param the hexadecimal Number
+	 */
+	static String binToHex(int binary)
+	{
+		// hm to store hexadecimal codes for binary numbers within the range : 0000 to 1111 i.e  for 
+		//decimal numbers 0 to 15
+		
+		HashMap<Integer, String> hm = new HashMap<>();
+		
+		String hex = "";
+		int i;
+		for(i = 0; i < 10; i++)
+		{
+			hm.put(i,String.valueOf(i));
+		}
+		for(i = 10; i < 16; i++) hm.put(i, String.valueOf((char)('A' + i - 10)));
+		int currbit;
+		while(binary != 0)
+		{
+			int code4 = 0;
+			for(i = 0; i < 4; i++)
+			{
+				currbit = binary % 10;
+				binary =binary / 10;
+				code4 += currbit * Math.pow(2, i);
+			}
+			hex = hm.get(code4) + hex;
+		}
+		return hex;
+	}
+	
+
+}
