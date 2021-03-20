@@ -174,8 +174,7 @@ public class FFT {
 		 *  @param x the differnce signal which is then converted to the FFT or the IFFT of signal x
 		 *  @param inverse True to find the Inverse of FFT
 		 */
-		public static void fft(ArrayList<Complex> x, boolean inverse)
-		{
+		public static void fft(ArrayList<Complex> x, boolean inverse) {
 			// pad the signal with zeroes if necessary
 			paddingPowerOFTwo(x);
 			int N = x.size();
@@ -252,5 +251,7 @@ public class FFT {
 		while(n < oldSize) n *= 2;
 		for(int i = 0; i < n - oldSize; i++) x.add(new Complex());
 	}
+
+	
 
 }
