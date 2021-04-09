@@ -425,6 +425,163 @@ public class AES {
 		return mergecellsIntoBlock(cells);
 	}
 	
+	/**
+	 * Cell permutation step. Shifts cells within th rows of the input and returns the result.
+	 * 
+	 * @param ciphertext
+	 */
+	public static BigInteger shiftRows(BigInteger ciphertext)
+	{
+		int[] cells = splitBlockIntoCells(ciphertext);
+		int[] output = new int[16];
+		
+		// do nothing in the first row
+		output[0] = cells[0];
+		output[4] = cells[4];
+		output[8] = cells[8];
+		output[12] = cells[12];
+		
+		//shft the second row backwards by one cell
+		output[1] = cells[5];
+		output[5] = cells[9];
+		output[9] = cells[13];
+		output[13] = cells[1];
+		
+		//shift the third row backward by two cells
+		output[2] = cells[10];
+		output[6] = cells[14];
+		output[10] = cells[2];
+		output[14] = cells[6];
+		
+		//shft the forth row backwards by tree cell
+		output[3] = cells[15];
+		output[7] = cells[3];
+		output[11] = cells[7];
+		output[15] = cells[11];
+		
+		return mergecellsIntoBlock(output);
+	}
+	
+	/**
+	 * Cell permutation step for decryption. shifts cells withn the rows of the nput and returns
+	 * the result 
+	 * 
+	 * @param ciphertext
+	 */
+	public static BigInteger shiftRowsDec(BigInteger ciphertext)
+	{
+		int[] cells = splitBlockIntoCells(ciphertext);
+		int[] output = new int[16];
+		
+		output[0] = cells[0];
+		output[4] = cells[4];
+		output[8] = cells[8];
+		output[12] = cells[12];
+		
+		//shift the second row forwards by one cell
+		output[1] = cells[13];
+		output[5] = cells[1];
+		output[9] = cells[5];
+		output[13] = cells[9];
+		
+		//shift the thrid row forward by two cells
+		output[2] = cells[10];
+		output[6] = cells[14];
+		output[10] = cells[2];
+		output[14] = cells[6];
+		
+		//shift the forth row forwars by tree cells
+		output[3] = cells[7];
+		output[7] = cells[11];
+		output[11] = cells[15];
+		output[15] = cells[3];
+		
+		return mergecellsIntoBlock(output);
+	}
+	
+	/**
+	 * Applies the rijndael MixColumns to the input and return the result
+	 * 
+	 * @param ciphertext
+	 */
+	public static BigInteger mixColumns(BigInteger ciphertext)
+	{
+		int[] cells = splitBlockIntoCells(ciphertext);
+		int[] outputCells = new int[16];
+		
+		for(int i = 0; i < 4; i++)
+		{
+			int[] row = {cells[i * 4], cells[i * 4 + 1], cells[i * 4 + 2], cells[i * 4 + 3]};
+			
+			outputCells[i * 4] = MULT2[row[0]] ^ MULT3[row[1]] ^ row[2] ^ row[3];
+			outputCells[i * 4 + 1] = row[0] ^ MULT2[row[1]] ^ MULT3[row[2]] ^ row[3];
+			outputCells[i * 4 + 2] = row[0] ^ row[1] ^ MULT2[row[2]] ^ MULT3[row[3]] ^ row[3];
+			outputCells[i * 4 + 3] = MULT3[row[0]] ^ row[1] ^ row[2] ^ MULT2[row[3]];
+		}
+		
+		return mergecellsIntoBlock(outputCells);
+	}
+	
+	/**
+	 * Applies the inverse rijndael MixColumns for decryption to the input and return the result.
+	 * 
+	 * @param ciphertext
+	 */
+	public static BigInteger mixColumnsDec(BigInteger ciphertext)
+	{
+		int[] cells = splitBlockIntoCells(ciphertext);
+		int[] outputCells = new int[16];
+		
+		for(int i = 0; i < 4; i++)
+		{
+			int[] row = {cells[i * 4], cells[i * 4 + 1], cells[i * 4 + 2], cells[i * 4 + 3]};
+			
+			outputCells[ i * 4] = MULT14[row[0]] ^ MULT11[row[1]] ^ MULT13[row[2]] ^ MULT9[row[3]];
+			outputCells[i * 4 + 1] = MULT9[row[0]] ^ MULT14[row[1]] ^ MULT11[row[2] ^ MULT13[row[3]]];
+			outputCells[i * 4 + 2] = MULT13[row[0]] ^ MULT9[row[1]] ^ MULT14[row[2] ^ MULT11[row[3]]];
+			outputCells[i * 4 + 3] = MULT11[row[0]] ^ MULT13[row[1]] ^ MULT9[row[2] ^ MULT14[row[3]]];
+		}
+		return mergecellsIntoBlock(outputCells);
+	}
+	
+	/**
+	 * 
+	 * Encrypts the plaintext with the key and return the result
+	 * 
+	 * @param plaintext which we want to encrypt 
+	 * @param key the key for encrypt
+	 * @return EncryptedText
+	 */
+	
+	public static BigInteger encrypt(BigInteger plainText, BigInteger key)
+	{
+		BigInteger[] roundKeys = keyExpansion(key);
+		
+		//Inital Round
+		for(int i = 1; i < 10; i++)
+		{
+			plainText = subBytes(plainText);
+			plainText = shiftRows(plainText);
+			plainText = mixColumns(plainText);
+			plainText = addroundKey(plainText, roundKeys[i]);
+		}
+		
+		// final round 
+		
+		plainText = subBytes(plainText);
+		plainText = shiftRows(plainText);
+		plainText = addroundKey(plainText, roundKeys[10]);
+		
+		return plainText;
+	}
+	
+	/**
+	 * Decrypts the ciphertext with the key and returns the result
+	 * 
+	 * @param ciphertext the Encrypted text which we want to decrypt
+	 * @param key
+	 * @return decryptedText
+	 */
 	
 
 
