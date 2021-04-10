@@ -640,7 +640,6 @@ public class AES {
 				break;
 				default:
 					System.out.println("**End**");
-			
 			}
 		}
 	}
