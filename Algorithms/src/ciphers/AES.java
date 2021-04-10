@@ -1,6 +1,7 @@
 package ciphers;
 
 import java.math.BigInteger;
+import java.util.Scanner;
 
 /**
  * 
@@ -582,6 +583,67 @@ public class AES {
 	 * @param key
 	 * @return decryptedText
 	 */
+	public static BigInteger decrypt(BigInteger cipherText, BigInteger key)
+	{
+		BigInteger[] roundKeys = keyExpansion(key);
+		
+		//Invert final round
+		cipherText = addroundKey(cipherText, roundKeys[10]);
+		cipherText = shiftRowsDec(cipherText);
+		cipherText = subBytesDec(cipherText);
+		
+		//Invert main round
+		for(int i = 9; i > 0; i--)
+		{
+			cipherText = addroundKey(cipherText, roundKeys[i]);
+			cipherText = mixColumnsDec(cipherText);
+			cipherText = shiftRowsDec(cipherText);
+			cipherText = subBytesDec(cipherText);
+		}
+		
+		//Invert intial round
+		cipherText = addroundKey(cipherText, roundKeys[0]);
+		
+		return cipherText;
+	}
+	
+	public static void main(String[] args )
+	{
+		try(Scanner input = new Scanner(System.in))
+		{
+			System.out.println("Enter (e) letter for encrypt or (d) letter for decrypt");
+			char choice = input.nextLine().charAt(0);
+			String in;
+			switch (choice)
+			{
+			case 'E' :
+			case 'e' :
+				System.out.println("Choose a plainText block (128 - Bit Integer in base 16) : ");
+				in = input.nextLine();
+				BigInteger plainText = new BigInteger(in, 16);
+				System.out.println("Choose a key (!28-Bit Integer in base 16) : ");
+				in = input.nextLine();
+				BigInteger  encryptionKey = new BigInteger(in, 16);
+				System.out.println(
+						"The encrypted message is: \n" + encrypt(plainText, encryptionKey).toString(16));
+				break;
+			case 'D' :
+			case 'd' :
+				System.out.println("Enter your cipherText block (128-Bit Integer in base 16) : ");
+				in = input.nextLine();
+				BigInteger ciphertext = new BigInteger(in, 16);
+				System.out.println("Choose a key (128-Bit Integer in base 16) :");
+				in = input.nextLine();
+				BigInteger decryptionKey = new BigInteger(in, 16);
+				System.out.println(
+						"The decvrypted messge is:\n" + decrypt(ciphertext, decryptionKey).toString(16));
+				break;
+				default:
+					System.out.println("**End**");
+			
+			}
+		}
+	}
 	
 
 
