@@ -10,7 +10,7 @@ public class FibonacciNumnber {
 	{
 		assert isFibonacciNumber(1);
 		assert isFibonacciNumber(2);
-		assert isFibonacciNumber(21);
+		System.out.println(isFibonacciNumber(21));
 		assert isFibonacciNumber(9);
 		assert isFibonacciNumber(10);
 	}
