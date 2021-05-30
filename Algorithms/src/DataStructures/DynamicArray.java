@@ -221,6 +221,30 @@ public class DynamicArray <E> implements Iterable<E> {
 			}
 		}		
 	}
+	
+	public static void main(String[] args)
+	{
+		DynamicArray<String> names = new DynamicArray<>();
+		names.add("jennifer");
+		names.add("Bharat");
+		
+		for(String name : names)
+		{
+			System.out.println(name);
+		}
+		
+		names.stream().forEach(System.out::println);
+		System.out.println(names);
+		
+		System.out.println(names.getSize());
+		
+		names.remove(0);
+		
+		for(String name : names)
+		{
+			System.out.println(name);
+		}
+	}
 
 	
 
