@@ -1,4 +1,4 @@
-package DataStructures;
+package DataStructures.Graphs;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -178,3 +178,4 @@ public class A_Star {
 	
 
 }
+
