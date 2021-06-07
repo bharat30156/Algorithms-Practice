@@ -50,7 +50,8 @@ class BellmanFord {
 	
 	public static void main(String[] args)
 	{
-		
+		BellmanFord obj = new BellmanFord(0, 0);
+		obj.go();
 	}
 	
 	public void go() // Interactive run for understanding the class first time. Assume source vertex is 0 and shows the distance to all veterx 
