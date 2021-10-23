@@ -31,7 +31,7 @@ public interface Heap {
 	 * @param elemnt an instance of the HeapElemnt class
 	 */
 	
-	void insertElement(HeapElement);
+	void insertElement(HeapElement element);
 	
 	/**
 	 * Delete an elemnet in the heap 
