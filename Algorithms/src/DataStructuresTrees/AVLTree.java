@@ -21,7 +21,7 @@ public class AVLTree {
 	{
 		if(root == null)
 		{
-			root = new Node(key,Null);
+			root = new Node(key,null);
 		}
 		else
 		{
@@ -42,13 +42,13 @@ public class AVLTree {
 				{
 					if(goLeft)
 					{
-						parent.left = new Node(key, parent);
+						Parent.left = new Node(key, Parent);
 					}
 					else
 					{
-						parent.right = new Node(key, parent);
+						Parent.right = new Node(key, Parent);
 					}
-					rebalance(parent);
+					rebalance(Parent);
 					break;
 				}
 			}
@@ -147,7 +147,7 @@ public class AVLTree {
 			}
 			else
 			{
-				n = rotateRightTenLeft(n);
+				n = rotateRighttenLeft(n);
 			}
 		}
 		
@@ -190,5 +190,121 @@ public class AVLTree {
 		setBalance(a,b);
 		
 		return b;
+	}
+	
+	private Node rotateRight(Node a)
+	{
+		Node b = a.left;
+		b.parent = a.parent;
+		
+		a.left = b.right;
+		
+		if(a.left != null)
+		{
+			a.left.parent = a;
+		}
+		
+		b.right  = a;
+		a.parent = b;
+		
+		if(b.parent != null)
+		{
+			if(b.parent.right == a)
+			{
+				b.parent.right = b;
+			}
+			else
+			{
+				b.parent.left = b;
+			}
+		}
+		setBalance(a,b);
+		return b;
+	}
+	
+	private Node rotateLeftThenRight(Node n)
+	{
+		n.left = rotateLeft(n.left);
+		return rotateRight(n);
+	}
+	
+	private Node rotateRighttenLeft(Node n)
+	{
+		n.right = rotateRight(n.right);
+		return rotateLeft(n);
+	}
+	
+	private int height(Node n)
+	{
+		if(n == null)
+		{
+			return -1;
+		}
+		return n.height;
+	}
+	
+	private void setBalance(Node...nodes)
+	{
+		for(Node n : nodes)
+		{
+			reheight(n);
+			n.balance = height(n.right) - height(n.left);
+		}
+	}
+	
+	public void printbalance()
+	{
+		printBalance(root);
+	}
+	
+	private void printBalance(Node n)
+	{
+		if(n != null)
+		{
+			printBalance(n.left);
+			System.out.printf("%s ", n.balance);
+			printBalance(n.right);
+		}
+	}
+	
+	private void reheight(Node node)
+	{
+		if(node != null)
+		{
+			node.height = 1 + Math.max(height(node.left), height(node.right));
+		}
+	}
+	
+	public boolean search(int key)
+	{
+		Node result = serachHelper(this.root, key);
+		if(result != null)
+		{
+			return true;
+		}
+		
+		return false;
+	}
+	
+	private Node serachHelper(Node root, int key)
+	{
+		// root is null or key is present at root 
+		if(root == null || root.key == key)
+		{
+			return root;
+		}
+		
+		// key is greater than root's key
+		if(root.key > key)
+		{
+			return serachHelper(root.left, key);
+		}
+		
+		return serachHelper(root.right, key);
+	}
+	
+	public static void main(String[] args)
+	{
+		
 	}
 }
