@@ -3,52 +3,43 @@ package DataStructuresTrees;
 public class AVLTree {
 	
 	private Node root;
-	private class Node
-	{
+	
+	private class Node{
 		private int key;
 		private int balance;
 		private int height;
 		private Node left, right, parent;
 		
-		Node(int k, Node p)
-		{
+		Node(int k, Node p){
 			key = k;
 			parent = p;
 		}
 	}
 	
-	public boolean insert(int key)
-	{
-		if(root == null)
-		{
-			root = new Node(key,null);
+	public boolean insert(int key) {
+		if(root == null) {
+			root = new Node(key, null);
 		}
-		else
-		{
+		else {
 			Node n = root;
-			Node Parent;
-			while(true)
-			{
-				if(n.key == key)
-				{
+			Node parent;
+			while(true) {
+				if(n.key == key) {
 					return false;
 				}
-				Parent = n;
 				
+				parent = n;
 				boolean goLeft = n.key > key;
 				n = goLeft ? n.left : n.right;
 				
-				if(n == null)
-				{
-					if(goLeft)
-					{
-						Parent.left = new Node(key, Parent);
+				if(n == null) {
+					if(goLeft) {
+						parent.left = new Node(key, parent);
 					}
-					else
-					{
-						Parent.right = new Node(key, Parent);
+					else {
+						parent.right = new Node(key, parent);
 					}
-					rebalance(Parent);
+					rebalance(parent);
 					break;
 				}
 			}
@@ -56,20 +47,14 @@ public class AVLTree {
 		return true;
 	}
 	
-	
-	private void delete(Node node)
-	{
-		if(node.left == null && node.right == null)
-		{
-			if(node.parent == null)
-			{
+	private void delete(Node node) {
+		if(node.left == null && node.right == null) {
+			if(node.parent == null) {
 				root = null;
 			}
-			else
-			{
+			else {
 				Node parent = node.parent;
-				if(parent.left == node)
-				{
+				if(parent.left == node) {
 					parent.left = null;
 				}
 				else
@@ -80,80 +65,64 @@ public class AVLTree {
 			}
 			return;
 		}
-		if(node.left != null)
-		{
-			Node child = node.left;
-			while(child.right != null)
-			{
+		
+		Node child;
+		if(node.left != null) {
+			child = node.left;
+			while(child.right != null) {
 				child = child.right;
 			}
-			node.key = child.key;
-			delete(child);
 		}
-		else
-		{
-			Node child = node.right;
-			while(child.left != null)
-			{
+		else {
+			child = node.right;
+			while(child.left != null) {
 				child = child.left;
 			}
-			
-			node.key = child.key;
-			delete(child);
 		}
+		node.key = child.key;
+		delete(child);
 	}
 	
-	public void delete(int delKey)
-	{
-		if(root == null)
-		{
+	public void delete (int delKey) {
+		if(root == null) {
 			return;
 		}
 		Node node = root;
 		Node child = root;
 		
-		while(child != null)
-		{
-			node = child;
-			child = delKey>= node.key ? node.right : node.left;
-			if(delKey == node.key)
-			{
+		while(child != null) {
+			node =  child;
+			child = delKey >= node.key ? node.right : node.left;
+			if(delKey == node.key) {
 				delete(node);
 				return;
 			}
 		}
 	}
 	
-	private void rebalance(Node n)
-	{
+	private void rebalance(Node n) {
 		setBalance(n);
-		
-		if(n.balance == -2)
-		{
-			if(height(n.left) >= height(n.left.right))
-			{
+		if(n.balance == -2) {
+			if(height(n.left) >= height (n.left.right)) {
 				n = rotateRight(n);
 			}
-			else
+			else 
 			{
 				n = rotateLeftThenRight(n);
 			}
 		}
-		else if(n.balance == 2)
-		{
-			if(height(n.right.right) >= height(n.right.left))
-			{
+		else if(n.balance == 2) {
+			if(height(n.right.right) >= height (n.right.left)) {
 				n = rotateLeft(n);
 			}
-			else
+			else 
 			{
-				n = rotateRighttenLeft(n);
+				n = rotateRightThenLeft(n);
 			}
 		}
 		
-		if(n.parent != null)
-		{
-			rebalance(n.balance);
+		if(n.parent != null) {
+			rebalance(n.parent);
 		}
 		else
 		{
@@ -161,25 +130,21 @@ public class AVLTree {
 		}
 	}
 	
-	private Node rotateLeft(Node a)
-	{
+	private Node rotateLeft(Node a) {
 		Node b = a.right;
 		b.parent = a.parent;
 		
 		a.right = b.left;
 		
-		if(a.right != null)
-		{
+		if(a.right != null) {
 			a.right.parent = a;
 		}
 		
 		b.left = a;
 		a.parent = b;
 		
-		if(b.parent != null)
-		{
-			if(b.parent.right == a)
-			{
+		if(b.parent != null) {
+			if(b.parent.right == a) {
 				b.parent.right = b;
 			}
 			else
@@ -188,29 +153,24 @@ public class AVLTree {
 			}
 		}
 		setBalance(a,b);
-		
 		return b;
 	}
 	
-	private Node rotateRight(Node a)
-	{
+	private Node rotateRight(Node a) {
 		Node b = a.left;
 		b.parent = a.parent;
 		
 		a.left = b.right;
 		
-		if(a.left != null)
-		{
+		if(a.left != null) {
 			a.left.parent = a;
 		}
 		
-		b.right  = a;
+		b.right = a;
 		a.parent = b;
 		
-		if(b.parent != null)
-		{
-			if(b.parent.right == a)
-			{
+		if(b.parent != null) {
+			if(b.parent.right == a) {
 				b.parent.right = b;
 			}
 			else
@@ -218,93 +178,83 @@ public class AVLTree {
 				b.parent.left = b;
 			}
 		}
+		
 		setBalance(a,b);
 		return b;
 	}
 	
-	private Node rotateLeftThenRight(Node n)
-	{
+	private Node rotateLeftThenRight(Node n) {
 		n.left = rotateLeft(n.left);
 		return rotateRight(n);
 	}
 	
-	private Node rotateRighttenLeft(Node n)
-	{
+	private Node rotateRightThenLeft(Node n) {
 		n.right = rotateRight(n.right);
 		return rotateLeft(n);
 	}
 	
-	private int height(Node n)
-	{
-		if(n == null)
-		{
+	private int height (Node n) {
+		if(n == null) {
 			return -1;
 		}
 		return n.height;
 	}
 	
-	private void setBalance(Node...nodes)
-	{
-		for(Node n : nodes)
-		{
+	private void setBalance(Node... nodes) {
+		for(Node n : nodes) {
 			reheight(n);
 			n.balance = height(n.right) - height(n.left);
 		}
 	}
 	
-	public void printbalance()
-	{
+	public void printBalance() {
 		printBalance(root);
 	}
 	
-	private void printBalance(Node n)
-	{
-		if(n != null)
-		{
+	private void printBalance(Node n) {
+		if(n != null) {
 			printBalance(n.left);
 			System.out.printf("%s ", n.balance);
 			printBalance(n.right);
 		}
 	}
 	
-	private void reheight(Node node)
-	{
-		if(node != null)
-		{
+	private void reheight(Node node) {
+		if(node != null) {
 			node.height = 1 + Math.max(height(node.left), height(node.right));
 		}
 	}
 	
-	public boolean search(int key)
-	{
-		Node result = serachHelper(this.root, key);
-		if(result != null)
-		{
-			return true;
-		}
-		
-		return false;
+	public boolean search(int key) {
+		Node reuslt = searchHelper(this.root, key);
+		return reuslt != null;
 	}
 	
-	private Node serachHelper(Node root, int key)
-	{
-		// root is null or key is present at root 
-		if(root == null || root.key == key)
-		{
+	private Node searchHelper(Node root, int key) {
+		// root is null or key is present at root
+		if(root == null || root.key == key) {
 			return root;
 		}
 		
 		// key is greater than root's key
-		if(root.key > key)
-		{
-			return serachHelper(root.left, key);
+		if(root.key > key) {
+			return searchHelper(root.left, key); // call the function on the node's left child
 		}
-		
-		return serachHelper(root.right, key);
+		//key is less than root's key then
+		//call the function on the node's right child as it is greater 
+		return searchHelper(root.right, key);
 	}
 	
-	public static void main(String[] args)
-	{
+	public static void main(String[] args) {
+		AVLTree tree = new AVLTree();
 		
+		System.out.println("Inserting values 1 to 10");
+		for(int i = 0; i < 10; i ++) {
+			tree.insert(i);
+		}
+		
+		System.out.println("Printing balance: ");
+		tree.printBalance();
 	}
+
 }
